@@ -10,6 +10,12 @@ class Addr {
 public:
     friend auto make_addr(auto* ptr) -> Addr;
 
+    template <typename T = void>
+    [[nodiscard]] auto to_ptr() const -> T*
+    {
+        return static_cast<T*>(ptr_);
+    }
+
 private:
     explicit Addr(void* const ptr) noexcept : ptr_{ptr}
     {}
