@@ -3,8 +3,8 @@ project(reutl)
 
 set(CMAKE_CXX_STANDARD 23)
 
-add_library(reutl INTERFACE)
-target_include_directories(reutl INTERFACE include)
+add_library(reutl src/memory.cc)
+target_include_directories(reutl PUBLIC include)
 
 
 enable_testing()

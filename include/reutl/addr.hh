@@ -1,6 +1,8 @@
 #ifndef REUTL_ADDR_HH
 #define REUTL_ADDR_HH
 
+#include "win/memory.hh"
+
 #include <cstdint>
 #include <type_traits>
 
@@ -14,6 +16,31 @@ public:
     [[nodiscard]] auto to_ptr() const -> T*
     {
         return static_cast<T*>(ptr_);
+    }
+
+    [[nodiscard]] auto is_accessible() const -> bool
+    {
+        return win::is_accessible_addr(ptr_);
+    }
+
+    [[nodiscard]] auto is_readable() const -> bool
+    {
+        return win::is_readable_addr(ptr_);
+    }
+
+    [[nodiscard]] auto is_writable() const -> bool
+    {
+        return win::is_writable_addr(ptr_);
+    }
+
+    [[nodiscard]] auto is_executable() const -> bool
+    {
+        return win::is_executable_addr(ptr_);
+    }
+
+    [[nodiscard]] auto is_guarded() const -> bool
+    {
+        return win::is_guarded_addr(ptr_);
     }
 
 private:
