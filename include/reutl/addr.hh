@@ -6,8 +6,14 @@
 #include <cstdint>
 #include <cassert>
 #include <type_traits>
+#include <concepts>
 
 namespace reutl {
+
+template <typename T>
+concept RelAddrType = std::same_as<std::remove_cv_t<T>, std::int8_t> ||
+                      std::same_as<std::remove_cv_t<T>, std::int16_t> ||
+                      std::same_as<std::remove_cv_t<T>, std::int32_t>;
 
 class Addr {
 public:
@@ -23,6 +29,20 @@ public:
         }
 
         return Addr{static_cast<uint8_t*>(ptr_) + offs};
+    }
+
+    template <RelAddrType T> // NOLINT(readability-identifier-naming)
+    [[nodiscard]] auto deref_rel(const std::size_t instr_size) const -> Addr
+    {
+        assert(instr_size >= sizeof(T));
+
+        const auto opc_size = instr_size - sizeof(T);
+        const auto rel      = this->offset(opc_size);
+
+        assert(rel.is_readable());
+
+        const auto rel_offs = *static_cast<T*>(rel.ptr_);
+        return this->offset(rel_offs + instr_size);
     }
 
     // NOLINTEND(*-sign-co*)
