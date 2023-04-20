@@ -4,6 +4,7 @@
 #include "win/memory.hh"
 
 #include <cstdint>
+#include <cassert>
 #include <type_traits>
 
 namespace reutl {
@@ -11,6 +12,20 @@ namespace reutl {
 class Addr {
 public:
     friend auto make_addr(auto* ptr) -> Addr;
+
+    // NOLINTBEGIN(*-sign-co*)
+    [[nodiscard]] auto offset(const std::ptrdiff_t offs) const -> Addr
+    {
+        {
+            // check for overflows // NOLINTNEXTLINE(readability-qualified-auto)
+            const auto ptr = reinterpret_cast<std::uintptr_t>(ptr_);
+            assert(offs < 0 ? ptr > -offs : ptr + offs >= ptr);
+        }
+
+        return Addr{static_cast<uint8_t*>(ptr_) + offs};
+    }
+
+    // NOLINTEND(*-sign-co*)
 
     template <typename T = void>
     [[nodiscard]] auto to_ptr() const -> T*

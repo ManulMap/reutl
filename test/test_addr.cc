@@ -67,3 +67,18 @@ TEST_CASE("memory protection methods")
         VirtualFree(alloc, sizeof(void*), MEM_RELEASE);
     }
 }
+
+TEST_CASE("offset()")
+{
+    const auto test_struct = std::make_unique<TestStruct>();
+
+    const auto end = reutl::make_addr(test_struct.get()) //
+                         .offset(offsetof(TestStruct, end_value));
+
+    REQUIRE(*(end.to_ptr<int32_t>()) == 42);
+
+    // NOLINTNEXTLINE(*-conversion*)
+    const auto start = end.offset(-offsetof(TestStruct, end_value));
+
+    REQUIRE(*(start.to_ptr<int32_t>()) == 24);
+}
