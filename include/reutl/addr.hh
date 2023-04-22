@@ -7,6 +7,7 @@
 #include <cassert>
 #include <type_traits>
 #include <concepts>
+#include <compare>
 
 namespace reutl {
 
@@ -18,6 +19,19 @@ concept RelAddrType = std::same_as<std::remove_cv_t<T>, std::int8_t> ||
 class Addr {
 public:
     friend auto make_addr(auto* ptr) -> Addr;
+
+    [[nodiscard]] auto operator<=>(const Addr&) const        = default;
+    [[nodiscard]] auto operator==(const Addr&) const -> bool = default;
+
+    [[nodiscard]] auto operator<=>(const void* const rhs) const noexcept
+    {
+        return rhs <=> ptr_;
+    }
+
+    [[nodiscard]] auto operator==(const void* const rhs) const noexcept -> bool
+    {
+        return rhs == ptr_;
+    }
 
     // NOLINTBEGIN(*-sign-co*)
     [[nodiscard]] auto offset(const std::ptrdiff_t offs) const -> Addr
