@@ -1,0 +1,179 @@
+---
+Checks: '-*,
+bugprone-*,
+clang-analyzer-*,
+cppcoreguidelines-*,
+misc-*,
+modernize-*,
+performance-*,
+readability-*,
+
+-bugprone-easily-swappable-parameters,
+
+-cppcoreguidelines-pro-type-reinterpret-cast,
+-cppcoreguidelines-pro-type-const-cast,
+-cppcoreguidelines-avoid-magic-numbers,
+
+-readability-braces-around-statements,
+-readability-function-cognitive-complexity,
+-readability-function-size,
+-readability-identifier-length,
+-readability-uppercase-literal-suffix,
+-readability-magic-numbers,
+-readability-implicit-bool-conversion,
+-cppcoreguidelines-pro-bounds-pointer-arithmetic,
+
+google-build-namespaces,
+google-build-using-namespace,
+google-default-arguments,
+google-explicit-constructor,
+google-global-names-in-headers,
+google-readability-casting,
+google-runtime-int,
+google-runtime-operator,
+
+hicpp-multiway-paths-covered,
+
+cert-dcl58-cpp,
+cert-err33-c,
+cert-err34-c,
+cert-flp30-c,
+cert-oop57-cpp,
+cert-oop58-cpp'
+
+HeaderFilterRegex: ''
+FormatStyle: file
+HeaderFileExtensions: [ 'hh' ]
+ImplementationFileExtensions: [ 'cc' ]
+
+CheckOptions:
+  - key:            readability-identifier-naming.AbstractClassCase
+    value:          CamelCase
+  - key:            readability-identifier-naming.ClassCase
+    value:          CamelCase
+  - key:            readability-identifier-naming.ParameterPackCase
+    value:          CamelCase
+  - key:            readability-identifier-naming.StructCase
+    value:          CamelCase
+  - key:            readability-identifier-naming.TemplateParameterCase
+    value:          CamelCase
+  - key:            readability-identifier-naming.TemplateTemplateParameterCase
+    value:          CamelCase
+  - key:            readability-identifier-naming.TypeAliasCase
+    value:          CamelCase
+  - key:            readability-identifier-naming.TypedefCase
+    value:          CamelCase
+  - key:            readability-identifier-naming.TypeTemplateParameterCase
+    value:          CamelCase
+  - key:            readability-identifier-naming.UnionCase
+    value:          CamelCase
+
+
+  - key:            readability-identifier-naming.EnumCase
+    value:          CamelCase
+  - key:            readability-identifier-naming.ScopedEnumConstantCase
+    value:          CamelCase
+  - key:            readability-identifier-naming.ScopedEnumCase
+    value:          CamelCase
+
+
+  - key:            readability-identifier-naming.ClassConstantCase
+    value:          lower_case
+  - key:            readability-identifier-naming.ClassMemberCase
+    value:          lower_case
+  - key:            readability-identifier-naming.ClassMethodCase
+    value:          lower_case
+  - key:            readability-identifier-naming.ConstantCase
+    value:          lower_case
+  - key:            readability-identifier-naming.ConstantMemberCase
+    value:          lower_case
+  - key:            readability-identifier-naming.ConstantParameterCase
+    value:          lower_case
+  - key:            readability-identifier-naming.ConstantPointerParameterCase
+    value:          lower_case
+  - key:            readability-identifier-naming.ConstexprFunctionCase
+    value:          lower_case
+  - key:            readability-identifier-naming.ConstexprMethodCase
+    value:          lower_case
+  - key:            readability-identifier-naming.ConstexprVariableCase
+    value:          lower_case
+  - key:            readability-identifier-naming.FunctionCase
+    value:          lower_case
+  - key:            readability-identifier-naming.GlobalConstantCase
+    value:          lower_case
+  - key:            readability-identifier-naming.GlobalConstantPointerCase
+    value:          lower_case
+  - key:            readability-identifier-naming.GlobalFunctionCase
+    value:          lower_case
+  - key:            readability-identifier-naming.GlobalPointerCase
+    value:          lower_case
+  - key:            readability-identifier-naming.GlobalVariableCase
+    value:          lower_case
+  - key:            readability-identifier-naming.InlineNamespaceCase
+    value:          lower_case
+  - key:            readability-identifier-naming.LocalConstantCase
+    value:          lower_case
+  - key:            readability-identifier-naming.LocalConstantPointerCase
+    value:          lower_case
+  - key:            readability-identifier-naming.LocalPointerCase
+    value:          lower_case
+  - key:            readability-identifier-naming.LocalVariableCase
+    value:          lower_case
+  - key:            readability-identifier-naming.MemberCase
+    value:          lower_case
+  - key:            readability-identifier-naming.MethodCase
+    value:          lower_case
+  - key:            readability-identifier-naming.NamespaceCase
+    value:          lower_case
+  - key:            readability-identifier-naming.ParameterCase
+    value:          lower_case
+  - key:            readability-identifier-naming.PointerParameterCase
+    value:          lower_case
+  - key:            readability-identifier-naming.PrivateMemberCase
+    value:          lower_case
+  - key:            readability-identifier-naming.PrivateMethodCase
+    value:          lower_case
+  - key:            readability-identifier-naming.ProtectedMemberCase
+    value:          lower_case
+  - key:            readability-identifier-naming.ProtectedMethodCase
+    value:          lower_case
+  - key:            readability-identifier-naming.PublicMemberCase
+    value:          lower_case
+  - key:            readability-identifier-naming.PublicMethodCase
+    value:          lower_case
+  - key:            readability-identifier-naming.StaticConstantCase
+    value:          lower_case
+  - key:            readability-identifier-naming.StaticVariableCase
+    value:          lower_case
+  - key:            readability-identifier-naming.ValueTemplateParameterCase
+    value:          lower_case
+  - key:            readability-identifier-naming.VariableCase
+    value:          lower_case
+  - key:            readability-identifier-naming.VirtualMethodCase
+    value:          lower_case
+
+
+  - key:            readability-identifier-naming.GlobalVariablePrefix
+    value:          g_
+  - key:            readability-identifier-naming.GlobalConstantPrefix
+    value:          k_
+  - key:            readability-identifier-naming.StaticVariablePrefix
+    value:          s_
+  - key:            readability-identifier-naming.StaticConstantPrefix
+    value:          k_
+  - key:            readability-identifier-naming.ClassConstantPrefix
+    value:          k_
+  - key:            readability-identifier-naming.ClassMemberPrefix
+    value:          s_
+  - key:            readability-identifier-naming.PrivateMemberSuffix
+    value:          _
+  - key:            readability-identifier-naming.AbstractClassPrefix
+    value:          I
+  - key:            readability-identifier-naming.EnumConstantPrefix
+    value:          K_
+
+
+  - key:            readability-identifier-naming.MacroDefinitionCase
+    value:          UPPER_CASE
+  - key:            readability-identifier-naming.EnumConstantCase
+    value:          UPPER_CASE
