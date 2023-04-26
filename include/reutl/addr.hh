@@ -45,7 +45,7 @@ public:
     }
 
     template <RelAddrType T> // NOLINT(readability-identifier-naming)
-    [[nodiscard]] auto deref_rel(const std::size_t instr_size) const -> Addr
+    [[nodiscard]] auto deref_instr_rel(const std::size_t instr_size) const -> Addr
     {
         assert(instr_size >= sizeof(T));
 
