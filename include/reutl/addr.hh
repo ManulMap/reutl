@@ -5,7 +5,6 @@
 
 #include <cstdint>
 #include <cassert>
-#include <type_traits>
 #include <concepts>
 #include <compare>
 
@@ -18,7 +17,7 @@ concept RelAddrType = std::same_as<std::remove_cv_t<T>, std::int8_t> ||
 
 class Addr {
 public:
-    friend auto make_addr(auto* ptr) -> Addr;
+    friend auto make_addr(const void* ptr) -> Addr;
 
     [[nodiscard]] auto operator<=>(const Addr&) const        = default;
     [[nodiscard]] auto operator==(const Addr&) const -> bool = default;
@@ -42,7 +41,7 @@ public:
             assert(offs < 0 ? ptr > -offs : ptr + offs >= ptr);
         }
 
-        return Addr{static_cast<uint8_t*>(ptr_) + offs};
+        return Addr{static_cast<const uint8_t*>(ptr_) + offs};
     }
 
     template <RelAddrType T> // NOLINT(readability-identifier-naming)
@@ -55,7 +54,7 @@ public:
 
         assert(rel.is_readable());
 
-        const auto rel_offs = *static_cast<T*>(rel.ptr_);
+        const auto rel_offs = *static_cast<const T*>(rel.ptr_);
         return this->offset(rel_offs + instr_size);
     }
 
@@ -64,7 +63,7 @@ public:
     template <typename T = void>
     [[nodiscard]] auto to_ptr() const -> T*
     {
-        return static_cast<T*>(ptr_);
+        return static_cast<T*>(const_cast<void*>(ptr_));
     }
 
     [[nodiscard]] auto is_accessible() const -> bool
@@ -93,18 +92,15 @@ public:
     }
 
 private:
-    explicit Addr(void* const ptr) noexcept : ptr_{ptr}
+    explicit Addr(const void* const ptr) noexcept : ptr_{ptr}
     {}
 
-    void* ptr_;
+    const void* ptr_;
 };
 
-[[nodiscard]] auto make_addr(auto* const ptr) -> Addr
+[[nodiscard]] inline auto make_addr(const void* const ptr) -> Addr
 {
-    auto* const non_const_ptr = const_cast<std::add_pointer_t< //
-        std::remove_cv_t<std::remove_pointer_t<decltype(ptr)>>>>(ptr);
-
-    return Addr{non_const_ptr};
+    return Addr{ptr};
 }
 
 } // namespace reutl
