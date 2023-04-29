@@ -14,7 +14,7 @@ find_pattern(std::span<const std::uint8_t> memory,
     if (res.empty())
         return std::nullopt;
 
-    return make_addr(res.data());
+    return Addr(res.data());
 }
 
 } // namespace reutl::detail

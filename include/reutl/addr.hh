@@ -17,7 +17,8 @@ concept RelAddrType = std::same_as<std::remove_cv_t<T>, std::int8_t> ||
 
 class Addr {
 public:
-    friend auto make_addr(const void* ptr) -> Addr;
+    explicit Addr(const void* const ptr) noexcept : ptr_{ptr}
+    {}
 
     [[nodiscard]] auto operator<=>(const Addr&) const        = default;
     [[nodiscard]] auto operator==(const Addr&) const -> bool = default;
@@ -92,16 +93,8 @@ public:
     }
 
 private:
-    explicit Addr(const void* const ptr) noexcept : ptr_{ptr}
-    {}
-
     const void* ptr_;
 };
-
-[[nodiscard]] inline auto make_addr(const void* const ptr) -> Addr
-{
-    return Addr{ptr};
-}
 
 } // namespace reutl
 
