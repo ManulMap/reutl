@@ -7,6 +7,7 @@
 #include <cassert>
 #include <concepts>
 #include <compare>
+#include <expected>
 
 namespace reutl {
 
@@ -67,29 +68,36 @@ public:
         return static_cast<T*>(const_cast<void*>(ptr_));
     }
 
-    [[nodiscard]] auto is_accessible() const -> bool
+    enum class ErrCheckMemAccess { WinapiFailed };
+
+    [[nodiscard]] auto is_accessible() const -> std::expected<bool, ErrCheckMemAccess>
     {
-        return win::is_accessible_addr(ptr_);
+        return win::is_accessible_addr(ptr_) //
+            .transform_error([](const auto err) { return ErrCheckMemAccess::WinapiFailed; });
     }
 
-    [[nodiscard]] auto is_readable() const -> bool
+    [[nodiscard]] auto is_readable() const -> std::expected<bool, ErrCheckMemAccess>
     {
-        return win::is_readable_addr(ptr_);
+        return win::is_readable_addr(ptr_) //
+            .transform_error([](const auto err) { return ErrCheckMemAccess::WinapiFailed; });
     }
 
-    [[nodiscard]] auto is_writable() const -> bool
+    [[nodiscard]] auto is_writable() const -> std::expected<bool, ErrCheckMemAccess>
     {
-        return win::is_writable_addr(ptr_);
+        return win::is_writable_addr(ptr_) //
+            .transform_error([](const auto err) { return ErrCheckMemAccess::WinapiFailed; });
     }
 
-    [[nodiscard]] auto is_executable() const -> bool
+    [[nodiscard]] auto is_executable() const -> std::expected<bool, ErrCheckMemAccess>
     {
-        return win::is_executable_addr(ptr_);
+        return win::is_executable_addr(ptr_) //
+            .transform_error([](const auto err) { return ErrCheckMemAccess::WinapiFailed; });
     }
 
-    [[nodiscard]] auto is_guarded() const -> bool
+    [[nodiscard]] auto is_guarded() const -> std::expected<bool, ErrCheckMemAccess>
     {
-        return win::is_guarded_addr(ptr_);
+        return win::is_guarded_addr(ptr_) //
+            .transform_error([](const auto err) { return ErrCheckMemAccess::WinapiFailed; });
     }
 
 private:

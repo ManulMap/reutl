@@ -28,7 +28,7 @@ TEST_CASE("memory protection methods")
 {
     SECTION("is_accessible()")
     {
-        REQUIRE_FALSE(reutl::Addr(static_cast<void*>(nullptr)).is_accessible());
+        REQUIRE_FALSE(reutl::Addr(static_cast<void*>(nullptr)).is_accessible().value_or(false));
     }
     SECTION("is_readable()")
     {
@@ -36,7 +36,7 @@ TEST_CASE("memory protection methods")
             VirtualAlloc(nullptr, sizeof(void*), MEM_RESERVE | MEM_COMMIT, PAGE_READONLY);
         assert(alloc);
 
-        REQUIRE(reutl::Addr(alloc).is_readable());
+        REQUIRE(reutl::Addr(alloc).is_readable().value_or(false));
         VirtualFree(alloc, NULL, MEM_RELEASE);
     }
     SECTION("is_writable()")
@@ -45,7 +45,7 @@ TEST_CASE("memory protection methods")
             VirtualAlloc(nullptr, sizeof(void*), MEM_RESERVE | MEM_COMMIT, PAGE_EXECUTE_READWRITE);
         assert(alloc);
 
-        REQUIRE(reutl::Addr(alloc).is_writable());
+        REQUIRE(reutl::Addr(alloc).is_writable().value_or(false));
         VirtualFree(alloc, NULL, MEM_RELEASE);
     }
     SECTION("is_executable()")
@@ -54,7 +54,7 @@ TEST_CASE("memory protection methods")
             VirtualAlloc(nullptr, sizeof(void*), MEM_RESERVE | MEM_COMMIT, PAGE_EXECUTE);
         assert(alloc);
 
-        REQUIRE(reutl::Addr(alloc).is_executable());
+        REQUIRE(reutl::Addr(alloc).is_executable().value_or(false));
         VirtualFree(alloc, NULL, MEM_RELEASE);
     }
     SECTION("is_guarded()")
@@ -63,7 +63,7 @@ TEST_CASE("memory protection methods")
                                          PAGE_READONLY | PAGE_GUARD);
         assert(alloc);
 
-        REQUIRE(reutl::Addr(alloc).is_guarded());
+        REQUIRE(reutl::Addr(alloc).is_guarded().value_or(false));
         VirtualFree(alloc, NULL, MEM_RELEASE);
     }
 }

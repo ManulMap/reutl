@@ -7,19 +7,21 @@
 namespace reutl::win {
 
 [[nodiscard]] auto //
-is_accessible_addr(const void* const addr) -> bool
+is_accessible_addr(const void* const addr) -> std::expected<bool, ErrCheckMemProtection>
 {
     MEMORY_BASIC_INFORMATION mbi;
-    VirtualQuery(addr, &mbi, sizeof(MEMORY_BASIC_INFORMATION));
+    if (!VirtualQuery(addr, &mbi, sizeof(MEMORY_BASIC_INFORMATION)))
+        return std::unexpected(ErrCheckMemProtection::FailedVirtualQuery);
 
     return mbi.Protect ^ PAGE_NOACCESS;
 }
 
 [[nodiscard]] auto //
-is_readable_addr(const void* const addr) -> bool
+is_readable_addr(const void* const addr) -> std::expected<bool, ErrCheckMemProtection>
 {
     MEMORY_BASIC_INFORMATION mbi;
-    VirtualQuery(addr, &mbi, sizeof(MEMORY_BASIC_INFORMATION));
+    if (!VirtualQuery(addr, &mbi, sizeof(MEMORY_BASIC_INFORMATION)))
+        return std::unexpected(ErrCheckMemProtection::FailedVirtualQuery);
 
     const auto prt = mbi.Protect;
 
@@ -28,10 +30,11 @@ is_readable_addr(const void* const addr) -> bool
 }
 
 [[nodiscard]] auto //
-is_writable_addr(const void* const addr) -> bool
+is_writable_addr(const void* const addr) -> std::expected<bool, ErrCheckMemProtection>
 {
     MEMORY_BASIC_INFORMATION mbi;
-    VirtualQuery(addr, &mbi, sizeof(MEMORY_BASIC_INFORMATION));
+    if (!VirtualQuery(addr, &mbi, sizeof(MEMORY_BASIC_INFORMATION)))
+        return std::unexpected(ErrCheckMemProtection::FailedVirtualQuery);
 
     const auto prt = mbi.Protect;
     return prt & PAGE_WRITECOPY || prt & PAGE_READWRITE || prt & PAGE_EXECUTE_WRITECOPY ||
@@ -39,10 +42,11 @@ is_writable_addr(const void* const addr) -> bool
 }
 
 [[nodiscard]] auto //
-is_executable_addr(const void* const addr) -> bool
+is_executable_addr(const void* const addr) -> std::expected<bool, ErrCheckMemProtection>
 {
     MEMORY_BASIC_INFORMATION mbi;
-    VirtualQuery(addr, &mbi, sizeof(MEMORY_BASIC_INFORMATION));
+    if (!VirtualQuery(addr, &mbi, sizeof(MEMORY_BASIC_INFORMATION)))
+        return std::unexpected(ErrCheckMemProtection::FailedVirtualQuery);
 
     const auto prt = mbi.Protect;
 
@@ -51,10 +55,11 @@ is_executable_addr(const void* const addr) -> bool
 }
 
 [[nodiscard]] auto //
-is_guarded_addr(const void* const addr) -> bool
+is_guarded_addr(const void* const addr) -> std::expected<bool, ErrCheckMemProtection>
 {
     MEMORY_BASIC_INFORMATION mbi;
-    VirtualQuery(addr, &mbi, sizeof(MEMORY_BASIC_INFORMATION));
+    if (!VirtualQuery(addr, &mbi, sizeof(MEMORY_BASIC_INFORMATION)))
+        return std::unexpected(ErrCheckMemProtection::FailedVirtualQuery);
 
     return mbi.Protect & PAGE_GUARD;
 }

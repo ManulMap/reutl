@@ -9,19 +9,19 @@ namespace reutl::win {
 enum class ErrCheckMemProtection { FailedVirtualQuery };
 
 [[nodiscard]] auto //
-is_accessible_addr(const void* addr) -> bool;
+is_accessible_addr(const void* addr) -> std::expected<bool, ErrCheckMemProtection>;
 
 [[nodiscard]] auto //
-is_readable_addr(const void* addr) -> bool;
+is_readable_addr(const void* addr) -> std::expected<bool, ErrCheckMemProtection>;
 
 [[nodiscard]] auto //
-is_writable_addr(const void* addr) -> bool;
+is_writable_addr(const void* addr) -> std::expected<bool, ErrCheckMemProtection>;
 
 [[nodiscard]] auto //
-is_executable_addr(const void* addr) -> bool;
+is_executable_addr(const void* addr) -> std::expected<bool, ErrCheckMemProtection>;
 
 [[nodiscard]] auto //
-is_guarded_addr(const void* addr) -> bool;
+is_guarded_addr(const void* addr) -> std::expected<bool, ErrCheckMemProtection>;
 
 enum class ErrWriteProtectedMem {
     FailedGetOldProtect,
