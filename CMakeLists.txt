@@ -3,9 +3,13 @@ project(reutl)
 
 set(CMAKE_CXX_STANDARD 23)
 
-add_library(reutl src/memory.cc)
-target_include_directories(reutl PUBLIC include)
+set(REUTL_SRC
+        "src/memory.cc"
+        "src/scanner.cc"
+        "src/safe_vmt.cc")
 
+add_library(reutl ${REUTL_SRC})
+target_include_directories(reutl PUBLIC include)
 
 enable_testing()
 add_subdirectory(test)
