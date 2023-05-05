@@ -4,7 +4,7 @@ project(reutl)
 set(CMAKE_CXX_STANDARD 23)
 
 set(REUTL_SRC
-        "src/memory.cc"
+        "src/win/memory.cc"
         "src/scanner.cc"
         "src/safe_vmt.cc")
 
