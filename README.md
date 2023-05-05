@@ -18,8 +18,8 @@ Library requires support for c++23, so you can use:
 
 ## Todo
 
-* implement wrapper for find_pattern that search in specific process module
-  (module should be got from peb not from GetModuleHandle)
+* find_pattern_in_module should take modules info from PEB
+  rather than from GetModuleHandle and GetModuleInformation
 * implement benchmarks for signature scanner
 * change scanner searching method from default std searcher to
   std::boyer_moore_searcher or std::boyer_moore_horspool_searcher

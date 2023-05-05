@@ -2,6 +2,7 @@
 #define REUTL_SCANNER_HH
 
 #include "addr.hh"
+#include "reutl/win/process.hh"
 
 #include <string_view>
 #include <optional>
@@ -11,6 +12,8 @@
 #include <ranges>
 #include <span>
 #include <cassert>
+#include <expected>
+#include <string>
 
 namespace reutl {
 
@@ -78,6 +81,20 @@ find_pattern(const void* const begin, const std::size_t size) -> std::optional<A
     const auto mask = detail::pat2mask<pattern>();
     return detail::find_pattern(std::span{static_cast<const std::uint8_t*>(begin), size},
                                 std::span{mask.data(), mask.size()});
+}
+
+enum class ErrFindMdlPattern { ErrGetMdlInfo };
+
+template <detail::FixedString pattern> // NOLINT(clang-diagnostic-ctad-maybe-unsupported)
+[[nodiscard]] auto find_pattern_in_module(std::string mdl)
+    -> std::expected<std::optional<Addr>, ErrFindMdlPattern>
+{
+    const auto mdl_info = win::get_module_info(mdl);
+
+    if (!mdl_info)
+        return std::unexpected(ErrFindMdlPattern::ErrGetMdlInfo);
+
+    return find_pattern<pattern>(mdl_info.value().begin, mdl_info.value().size);
 }
 
 } // namespace reutl
