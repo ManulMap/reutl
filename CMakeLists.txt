@@ -12,6 +12,8 @@ set(REUTL_SRC
 add_library(reutl ${REUTL_SRC})
 target_include_directories(reutl PUBLIC include)
 
+add_subdirectory(example EXCLUDE_FROM_ALL)
+
 if (BUILD_TESTING)
     add_subdirectory(test)
 endif ()

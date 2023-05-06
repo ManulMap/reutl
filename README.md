@@ -26,4 +26,4 @@ Library requires support for c++23, so you can use:
 
 ## Usage
 
-See the test directory for examples.
+See the example directory
