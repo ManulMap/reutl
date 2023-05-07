@@ -15,6 +15,11 @@ Library requires support for c++23, so you can use:
 * safe vmt hooks (replaces the object's vptr with our vmt)
 * hard vmt hooks (replaces original vmt cells)
 * memory address class with convenient methods
+  like dereferencing from relative jmp/call/lea instructions
+  and protection checks: is_executable() is_writable()
+* all hooks and vmts will be destroyed automatically
+  when unloading you library you may inject and then
+  unload your library multiple times without restarting target process
 
 ## Todo
 
@@ -23,10 +28,29 @@ Library requires support for c++23, so you can use:
 * implement benchmarks for signature scanner
 * change scanner searching method from default std searcher to
   std::boyer_moore_searcher or std::boyer_moore_horspool_searcher
+* Add github CI
 
 ## Usage
 
-See the example directory
+Library interfaces intended for use with monadic functions.
+
+```c++
+    const auto net_chan_vmt =
+        reutl::find_pattern_in_module<"40 53 56 57 41 56 48 83 EC ?? 45 33 F6 48 8D 71">(
+            "networksystem.dll")
+            .value_or(std::nullopt)
+            .transform([](const reutl::Addr addr) {
+                return addr
+                    .offset(0x15) //
+                    .deref_instr_rel<std::int32_t>(7)
+                    .to_ptr();
+            });
+```
+
+This is how it looks with resharper c++ helpers
+![resharper++.png](resharper++.png)
+
+See the example library for complete usage demonstration.
 
 ### Build
 
