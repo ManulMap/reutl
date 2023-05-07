@@ -27,3 +27,70 @@ Library requires support for c++23, so you can use:
 ## Usage
 
 See the example directory
+
+### Build
+
+#### Visual Studio
+
+Open Visual Studio Developer Command Prompt/Powershell cd to library root
+and enter the following commands
+
+```shell
+  mkdir build
+  cd build
+  cmake .. -G "Visual Studio 17 2022" -DBUILD_TESTING=OFF
+```
+
+after that open reult.sln in IDE and build reutl with preferred compiler options
+
+#### Ninja Build
+
+```shell
+mkdir build
+cd build
+cmake .. -G Ninja -DBUILD_TESTING=OFF
+cmake --build .
+
+# build example
+cmake --build . --target nw_hooks
+```
+
+If you are use CMake in your project consider installing reutl as a git submodule.
+
+```shell
+git submodule add https://github.com/ManulMap/reutl
+```
+
+Then include it into your library.
+
+```cmake
+cmake_minimum_required(VERSION 3.25)
+set(CMAKE_CXX_STANDARD 23)
+project(your_project)
+
+add_library(your_lib SHARED dllmain.cc)
+
+add_subdirectory(reutl)
+target_link_libraries(your_lib reutl)
+```
+
+### Development and testing
+
+In order to build reutl with testing, you need to install the Catch2
+testing framework with vcpkg and specify vcpkg toolchain file for cmake
+
+For Visual Studio IDE use **Open Folder** then open CMakeSettings.json
+and change **CMake toolchain file** option for your build profiles.
+
+For command line build use -DCMAKE_TOOLCHAIN_FILE option.
+
+```shell
+# build with testing (Catch2 must be installed)
+mkdir build
+cd build
+cmake .. -G Ninja -DBUILD_TESTING=ON -DCMAKE_TOOLCHAIN_FILE=PathToYourVcpkgToolchainFile\vcpkg.cmake
+
+# run tests
+cd test
+ctest --extra-verbose
+```
