@@ -3,6 +3,7 @@
 
 #include <string>
 #include <expected>
+#include <string_view>
 
 namespace reutl::win {
 
@@ -11,10 +12,10 @@ struct ModuleInfo {
     std::size_t size;
 };
 
-enum class ErrGetMdlInfo { MdlNotFound, NoAccessToMdlInfo };
+enum class ErrGetMdlInfo { MdlNotFound };
 
 [[nodiscard]] auto //
-get_module_info(const std::string& mdl) -> std::expected<ModuleInfo, ErrGetMdlInfo>;
+get_module_info(std::wstring_view mdl) -> std::expected<ModuleInfo, ErrGetMdlInfo>;
 
 } // namespace reutl::win
 

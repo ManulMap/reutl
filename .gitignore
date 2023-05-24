@@ -4,3 +4,5 @@ out
 cmake-build-*
 CMakeUserPresets.json
 build
+.vscode
+.cache

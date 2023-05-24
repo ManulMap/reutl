@@ -2,6 +2,7 @@
 
 #include <catch2/catch_test_macros.hpp>
 #include <array>
+#include <vadefs.h>
 
 const std::array<std::uint8_t, 75> k_shellcode = {
     /* 0 */ 0xDD,  0x1A, 0x6F, 0x61, 0x11, 0x66, // begin pattern
@@ -13,6 +14,10 @@ const std::array<std::uint8_t, 75> k_shellcode = {
     /* 50 */ 0x28, 0x27, 0x26, 0x78, 0xB7, 0xFA, 0xF2, 0x8F, 0x6A, 0x4F,
     /* 60 */ 0x87, 0x50, 0xB0, 0xA1, 0xE5, 0x21, 0x32, 0x55, 0x12, 0x40,
     /* 70 */ 0xF1, 0x06, 0x61, 0x7B}; // end pattern
+
+__declspec(noinline) int __fastcall test_function() {
+    return 13;
+}
 
 using reutl::find_pattern;
 
@@ -47,5 +52,14 @@ TEST_CASE("find_pattern()")
     {
         auto res = reutl::find_pattern<"ff aa 33 22 99 77 44">(k_shellcode.data(), k_shellcode.size());
         REQUIRE_FALSE(res.has_value());
+    }
+    SECTION("pattern in module")
+    {
+        const auto res = reutl::find_pattern_in_module<"B8 ?? ?? ?? ?? C3 66 2E 0F 1F 84 00 00 00 00 00">(L"test_scanner.exe");
+        
+        using fn = decltype(&test_function);
+
+        REQUIRE(res.has_value());
+        REQUIRE(reinterpret_cast<fn>(res->value().to_ptr())() == 13);
     }
 }
