@@ -86,7 +86,7 @@ find_pattern(const void* const begin, const std::size_t size) -> std::optional<A
 enum class ErrFindMdlPattern { ErrGetMdlInfo };
 
 template <detail::FixedString pattern> // NOLINT(clang-diagnostic-ctad-maybe-unsupported)
-[[nodiscard]] auto find_pattern_in_module(std::string mdl)
+[[nodiscard]] auto find_pattern_in_module(std::wstring_view mdl)
     -> std::expected<std::optional<Addr>, ErrFindMdlPattern>
 {
     const auto mdl_info = win::get_module_info(mdl);
